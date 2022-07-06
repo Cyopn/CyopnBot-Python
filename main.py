@@ -1,7 +1,8 @@
 from discord import Intents, Game, Status
 from discord.ext import commands
 import os
-import keep
+import keep as k
+from dotenv import load_dotenv
 
 i=Intents.all()
 
@@ -25,6 +26,8 @@ client.load_extension(name='cogs.fun')
 client.load_extension(name='cogs.music')
 client.load_extension(name='cogs.guild')
 
-keep.keep_alive()
-    
-client.run(os.environ['token'])
+load_dotenv()
+
+k.keep_alive()
+
+client.run(os.getenv("token"))
