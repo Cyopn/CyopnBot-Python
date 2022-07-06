@@ -1,4 +1,4 @@
-""" from flask import Flask, render_template
+from flask import Flask, render_template
 from threading import Thread
 
 app = Flask('Cyopn')
@@ -12,4 +12,4 @@ def run():
 
 def keep_alive():  
     t = Thread(target=run)
-    t.start() """
+    t.start()
