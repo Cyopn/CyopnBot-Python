@@ -3,13 +3,18 @@ from threading import Thread
 
 app = Flask('Cyopn')
 
+
 @app.route('/')
-def index():
-    return render_template("index.html")
+def home():
+    return "Servidor listo"
+""" def index():
+    return render_template("index.html") """
+
 
 def run():
-  app.run(host='0.0.0.0',port=8080)
+    app.run(host='0.0.0.0', port=8080)
 
-def keep_alive():  
+
+def keep_alive():
     t = Thread(target=run)
     t.start()

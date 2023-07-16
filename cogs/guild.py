@@ -4,48 +4,54 @@ from datetime import datetime
 ''' from pymongo import MongoClient '''
 import os
 
+
 class Servidor(commands.Cog):
-    def __init__(self, bot:commands.Bot) :
-        self.bot=bot
-    
+
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+
     @commands.command(name='ping')
     async def _ping(self, ctx):
         """Conoce la velocidad de respuesta del bot."""
         await ctx.reply(f'Pong! {round(self.bot.latency*1000)}ms')
-        
+
     @commands.command(name='ban')
-    @commands.has_permissions(ban_members = True)
-    async def _ban(self, ctx, usuario: discord.Member, *, razon:str):
+    @commands.has_permissions(ban_members=True)
+    async def _ban(self, ctx, usuario: discord.Member, *, razon: str):
         """Banea a un miembro del servidor."""
-        user=usuario
-        reason=razon
+        user = usuario
+        reason = razon
         await ctx.guild.ban(user, reason=reason)
-        await user.send(f'Fuiste baneado del servidor {ctx.guild}, razon: {reason}')
+        await user.send(
+            f'Fuiste baneado del servidor {ctx.guild}, razon: {reason}')
         await ctx.send(f'El usuario {user} fue baneado')
-        
+
     @commands.command(name='unban')
-    async def _unban(self, ctx, *, miembro:str):
+    async def _unban(self, ctx, *, miembro: str):
         """Desbanea a un miembro del servidor."""
-        member=miembro
+        member = miembro
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split('#')
 
         for ban_entry in banned_users:
             user = ban_entry.user
-  
-        if (user.name, user.discriminator) == (member_name, member_discriminator):
+
+        if (user.name, user.discriminator) == (member_name,
+                                               member_discriminator):
             await ctx.guild.unban(user)
             await ctx.send(f"El usuario {user} fue desbaneado")
-            
+
     @commands.command(name='suport', aliases=['sp'])
     async def _suport(self, ctx):
         """Recibe ayuda en caso de un mal funcionamiento del bot."""
-        embed=(discord.Embed(
+        embed = (discord.Embed(
             title='Soporte',
-            description=f'Si tienes alguna duda sobre el bot, usa `+help`\nSi existe algun problema [contactame](https://instagram.com/Cyopn_), si no, unete al servidor de [soporte](https://discord.gg/qDBEhdskJP)',
+            description=
+            f'Si tienes alguna duda sobre el bot, usa `+help`\nSi existe algun problema [contactame](https://instagram.com/Cyopn_), si no, unete al servidor de [soporte](https://discord.gg/qDBEhdskJP)',
             color=discord.Color.random(),
-            timestamp=datetime.utcnow())
-            .set_footer(text='CyopnBot', icon_url='https://avatars.githubusercontent.com/u/77410038'))
+            timestamp=datetime.utcnow()).set_footer(
+                text='CyopnBot',
+                icon_url='https://avatars.githubusercontent.com/u/77410038'))
         await ctx.send(embed=embed)
         ''' 
     @commands.command(name='pin')
@@ -60,5 +66,6 @@ class Servidor(commands.Cog):
         collection.insert(pin_cm)
         await ctx.reply('Pin registrado') '''
 
-def setup(bot:commands.Bot):
-    bot.add_cog(Servidor(bot))  
+
+async def setup(bot: commands.Bot):
+    await bot.add_cog(Servidor(bot))
